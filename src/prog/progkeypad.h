@@ -5,28 +5,25 @@
  */
 #ifndef PROGKEYPAD_H
 #define PROGKEYPAD_H
+#include "../config/settings.h"
 #include "../driver/pca9685.h"
 #include "../helper/rgbled.h"
-#include "../config/settings.h"
+#include "baseprogram.h"
 #include <Keypad.h>
 
 namespace Program {
-  class ProgKeypad {
-    public:
-    ProgKeypad(Driver::Pca9685 &driver);
-    void begin();
-    void update();
-    void pause();
-    void reset();
-    private:
-    int _state; //holds state of program
-    int _counter;
-    Helper::RGBLed _beacon;
-    Helper::Led _ind;
-    Keypad _keypad;
-    String _input_pass;
-    int _randomColor
+class ProgKeypad : public BaseProgram {
+public:
+  ProgKeypad(Driver::Pca9685 &driver);
+  void begin() override;
+  void update() override;
+  void reset() override;
 
-  };
+private:
+  void updateInd();
+  Helper::Led _ind;
+  Keypad _keypad;
+  String _input_pass;
 };
+}; // namespace Program
 #endif

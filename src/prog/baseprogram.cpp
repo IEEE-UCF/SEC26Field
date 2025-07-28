@@ -5,43 +5,99 @@
  */
 #include "baseprogram.h"
 namespace Program {
+/**
+ * Constructor.
+ */
 BaseProgram::BaseProgram(Driver::Pca9685 &driver,
-                         Configuration::LedSetup &ledsetup)
-    : _driver(driver), _beacon(driver, ledsetup), _state(0) {
+                         Configuration::LedSetup ledsetup, String identifier)
+    : _driver(driver), _beacon(driver, ledsetup), _identifier(identifier),
+      _state(0) {
   _randomColor = selectColor();
 }
 
+/**
+ * Begins the program. Calls the reset function, then sets the state to "1"
+ * (running, not activated).
+ */
 void BaseProgram::begin() {
   BaseProgram::reset();
   _state = 1;
 }
 
+/**
+ * Updates the program. Must be overridden.
+ */
 void BaseProgram::update() { return; }
 
+/**
+ * Pauses the program. Sets the state to "3" (paused).
+ */
 void BaseProgram::pause() { _state = 3; }
 
+/**
+ * Resets the program. Sets the state to "0" (reset).
+ */
 void BaseProgram::reset() {
   _state = 0;
   _randomColor = selectColor();
-  _beacon.set(Helper::Colors::OFF);
+  BaseProgram::updateBeaconLed(); // update the beacon
 }
 
+/**
+ * Displays info of state.
+ * @param output Serial pointer
+ */
 void BaseProgram::displayInfo(Print &output) const {
+  output.print("Program: ");
+  output.print(_identifier);
   output.print("State: ");
-  output.println(_state);
+  output.print(_state);
+  output.print("Color: ");
+  output.println(_randomColor);
 }
 
+/**
+ * Updates the beacon LED based on state. Should only be called when necessary
+ * @param state use _state
+ */
+void BaseProgram::updateBeaconLed() {
+  switch (_state) {
+  case 0: // reset
+  case 1: // running, not activated
+    _beacon.set(Helper::Colors::OFF);
+    _beacon.set(Helper::Colors::OFF);
+    break;
+  case 2: // running, activated
+    _beacon.set(BaseProgram::getColor(_state));
+    break;
+  case 3: // paused, do nothing
+  default:
+    break;
+  }
+}
+
+/**
+ * Returns a random int from 0-4.
+ * @return int
+ */
 int BaseProgram::selectColor() { return random(4); }
-Helper::Color BaseProgram::getColor(int num) {
-  switch(num) {
-    case 0:
+
+/**
+ * Returns the color for a int from 0-4.
+ * @return Helper::Color
+ */
+Helper::Color BaseProgram::getColor(int num = -1) {
+  switch (num) {
+  case 0:
     return Helper::Colors::RED;
-    case 1:
+  case 1:
     return Helper::Colors::BLUE;
-    case 2:
+  case 2:
     return Helper::Colors::GREEN;
-    case 3:
+  case 3:
     return Helper::Colors::PURPLE;
+  default:
+    return Helper::Colors::OFF;
   }
 }
 

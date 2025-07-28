@@ -7,35 +7,29 @@
 
 namespace Program {
 ProgButton::ProgButton(Driver::Pca9685 &driver)
-    : _state(0), _counter(0), _in(Configuration::Button::BUT_IN),
-      _beacon(driver, Configuration::Button::LIGHT),
+    : BaseProgram(driver, Configuration::Button::LIGHT, "Button"), _counter(0),
+      _in(Configuration::Button::BUT_IN),
       _red(driver, Configuration::Button::IND_RED),
       _yellow(driver, Configuration::Button::IND_YELLOW),
       _green(driver, Configuration::Button::IND_GREEN) {};
 
 void ProgButton::begin() {
-  _state = 1; // begin program
-  _in.setDebounceTime(50);
+  ProgButton::reset();
+  _state = 1;
 }
 
 void ProgButton::update() {
-  _in.loop();
+  _in.loop(); // update the button
   switch (_state) {
   case 0: // reset
     break;
   case 1: // running, beacon not activated
     if (_in.isPressed()) {
       _counter++;
+      ProgButton::updateInd();
       switch (_counter) {
-      case 1:
-        _red.set(255);
-        break;
-      case 2:
-        _yellow.set(255);
-        break;
-      case 3:
-        _green.set(255);
-        _state = 2; // indicate beacon activated
+        _state = 2;                     // indicate beacon activated
+        BaseProgram::updateBeaconLed(); // update the led
         break;
       }
     }
@@ -49,15 +43,27 @@ void ProgButton::update() {
   }
 }
 
-void ProgButton::pause() { _state = 3; }
-
 void ProgButton::reset() {
-  _state = 1;
+  BaseProgram::reset(); // handles beacon led, state, etc...
   _counter = 0;
-  _beacon.set(Helper::Colors::OFF);
   _red.set(0);
   _yellow.set(0);
   _green.set(0);
+  _in.setDebounceTime(50);
+}
+
+void ProgButton::updateInd() {
+  switch (_counter) {
+  case 1:
+    _red.set(255);
+    break;
+  case 2:
+    _yellow.set(255);
+    break;
+  case 3:
+    _green.set(255);
+    break;
+  }
 }
 
 } // namespace Program

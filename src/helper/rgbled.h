@@ -6,10 +6,11 @@
 #ifndef RGBLED_h
 #define RGBLED_h
 
+#include "../config/settings.h"
 #include "../driver/pca9685.h"
 #include "led.h"
-#include "../config/settings.h"
 #include <Arduino.h>
+
 
 namespace Helper {
 using Configuration::LedSetup;
@@ -22,12 +23,12 @@ struct Color {
 };
 
 namespace Colors {
-  constexpr Color RED(150, 0, 0);
-  constexpr Color BLUE(0, 0, 150);
-  constexpr Color GREEN(0, 100, 0);
-  constexpr Color PURPLE(200, 0, 150);
-  constexpr Color OFF(0, 0, 0);
-};
+constexpr Color RED(150, 0, 0);
+constexpr Color BLUE(0, 0, 150);
+constexpr Color GREEN(0, 100, 0);
+constexpr Color PURPLE(200, 0, 150);
+constexpr Color OFF(0, 0, 0);
+}; // namespace Colors
 
 class RGBLed {
 public:
