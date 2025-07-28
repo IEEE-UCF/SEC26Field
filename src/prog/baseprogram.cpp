@@ -21,7 +21,7 @@ BaseProgram::BaseProgram(Driver::Pca9685 &driver,
  */
 void BaseProgram::begin() {
   BaseProgram::reset();
-  _state = 1;
+  _state = RUNNING_OFF;
 }
 
 /**
@@ -32,15 +32,15 @@ void BaseProgram::update() { return; }
 /**
  * Pauses the program. Sets the state to "3" (paused).
  */
-void BaseProgram::pause() { _state = 3; }
+void BaseProgram::pause() { _state = PAUSE; }
 
 /**
  * Resets the program. Sets the state to "0" (reset).
  */
 void BaseProgram::reset() {
-  _state = 0;
+  _state = RESET;
   _randomColor = selectColor();
-  BaseProgram::updateBeaconLed(); // update the beacon
+  BaseProgram::updateBeacon(); // update the beacon
 }
 
 /**
@@ -60,17 +60,16 @@ void BaseProgram::displayInfo(Print &output) const {
  * Updates the beacon LED based on state. Should only be called when necessary
  * @param state use _state
  */
-void BaseProgram::updateBeaconLed() {
+void BaseProgram::updateBeacon() {
   switch (_state) {
-  case 0: // reset
-  case 1: // running, not activated
-    _beacon.set(Helper::Colors::OFF);
+  case RUNNING_OFF: // running, not activated
     _beacon.set(Helper::Colors::OFF);
     break;
-  case 2: // running, activated
+  case RUNNING_ON: // running, activated
     _beacon.set(BaseProgram::getColor(_state));
     break;
-  case 3: // paused, do nothing
+  case RESET: // reset
+  case PAUSE: // paused, do nothing
   default:
     break;
   }

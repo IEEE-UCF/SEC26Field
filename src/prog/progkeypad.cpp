@@ -40,28 +40,28 @@ void ProgKeypad::update() {
       } else {
         _input_pass.concat(key);
       }
-      ProgKeypad::updateInd();
-      BaseProgram::updateBeaconLed();
+      ProgKeypad::updateIndicator();
+      BaseProgram::updateBeacon();
     }
   }
 }
 
 void ProgKeypad::reset() {
-  BaseProgram::reset();  // handles beacon led, state, etc...
-  updateInd();           // set indicator led to 0
-  _input_pass.remove(0); // clears string
+  BaseProgram::reset();    // handles beacon led, state, etc...
+  ProgKeypad::updateIndicator(); // set indicator led to 0
+  _input_pass.remove(0);   // clears string
 }
 
-void ProgKeypad::updateInd() {
+void ProgKeypad::updateIndicator() {
   switch (_state) {
-  case 0:
-  case 1:
+  case RESET:
+  case RUNNING_OFF:
     _ind.set(0);
     break;
-  case 2:
+  case RUNNING_ON:
     _ind.set(255);
     break;
-  case 3:
+  case PAUSE:
   default:
     break;
   }

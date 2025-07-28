@@ -20,7 +20,7 @@ public:
   void reset() override;
 
 private:
-  void updateInd();
+  void updateIndicator();
   Helper::Led _ind;
   Keypad _keypad;
   String _input_pass;

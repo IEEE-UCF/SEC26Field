@@ -27,7 +27,7 @@ public:
   virtual void pause();
   virtual void reset();
   virtual void displayInfo(Print &output) const;
-  void updateBeaconLed();
+  void updateBeacon();
 
 protected:
   Driver::Pca9685 _driver;
@@ -38,6 +38,8 @@ protected:
    * 1: running, not activated
    * 2: running, activated
    * 3: paused
+   * 4: custom1
+   * 5: custom2
    * */
   int _state;
   int _randomColor;

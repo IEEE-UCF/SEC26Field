@@ -31,7 +31,7 @@ public:
   void reset() override;
 
 private:
-  void updateInd();
+  void updateIndicator();
   // int _state; inherited
   int _counter;
   ezButton _in;

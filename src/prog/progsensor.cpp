@@ -12,15 +12,15 @@ void ProgSensor::update() {
   case RUNNING_OFF:
     if (!result) {
       _state = RUNNING_ON;
-      BaseProgram::updateBeaconLed();
-      ProgSensor::updateInd();
+      BaseProgram::updateBeacon();
+      ProgSensor::updateIndicator();
     }
     break;
   case CUSTOM1: // special case if sens is not high enough at the beginning,
     if (result) {
       _state = RUNNING_OFF;
-      BaseProgram::updateBeaconLed();
-      ProgSensor::updateInd();
+      BaseProgram::updateBeacon();
+      ProgSensor::updateIndicator();
     }
     break;
   case RESET:
@@ -33,7 +33,7 @@ void ProgSensor::update() {
 
 void ProgSensor::reset() {
   BaseProgram::reset();    // handles beacon led, state, etc...
-  ProgSensor::updateInd(); // updates indicator
+  ProgSensor::updateIndicator(); // updates indicator
   _reading = 0;
 }
 
@@ -46,13 +46,13 @@ void ProgSensor::getReading() {
  */
 bool ProgSensor::evaluateObject() { return _reading >= 50; }
 
-void ProgSensor::updateInd() {
+void ProgSensor::updateIndicator() {
   switch (_state) {
-  case 0:
-  case 1:
+  case RESET:
+  case RUNNING_OFF:
     _ind.set(0);
     break;
-  case 2:
+  case RUNNING_ON:
     _ind.set(255);
     break;
   case 3:

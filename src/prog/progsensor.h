@@ -23,7 +23,7 @@ public:
 private:
   void getReading();
   bool evaluateObject();
-  void updateInd();
+  void updateIndicator();
   Helper::Led _ind;
   int _reading;
 };
