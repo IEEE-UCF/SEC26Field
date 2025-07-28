@@ -3,28 +3,20 @@
  * @brief Program for button beacon
  * @author Aldem Pido
  */
-
-/**
- * Program state definitions
- * 0: reset
- * 1: running, beacon not activated
- * 2: running, beacon activated
- * 3: paused
- */
-#ifndef PROGBUTTON_H
-#define PROGBUTTON_H
+#ifndef BEACON_BUTTON_H
+#define BEACON_BUTTON_H
 
 #include <ezButton.h> // The library to use for SW pin
 
 #include "../config/settings.h"
 #include "../helper/rgbled.h"
-#include "baseprogram.h"
+#include "program_template.h"
 
 namespace Program {
-class ProgButton : public BaseProgram {
+class Beacon_Button : public Program_Template {
 
 public:
-  ProgButton(Driver::Pca9685 &driver);
+  Beacon_Button(Driver::Pca9685 &driver);
   void begin() override;
   void update() override;
   // void pause() override;

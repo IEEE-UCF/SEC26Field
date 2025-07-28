@@ -3,19 +3,19 @@
  * @brief Header for sensor program
  * @author Aldem Pido
  */
-#ifndef PROGSENSOR_H
-#define PROGSENSOR_H
+#ifndef BEACON_SENSOR_H
+#define BEACON_SENSOR_H
 #include "../config/settings.h"
 #include "../driver/pca9685.h"
 #include "../helper/rgbled.h"
-#include "baseprogram.h"
+#include "program_template.h"
 #include <Arduino.h>
 
 
 namespace Program {
-class ProgSensor : public BaseProgram {
+class Beacon_Sensor : public Program_Template {
 public:
-  ProgSensor(Driver::Pca9685 &driver);
+  Beacon_Sensor(Driver::Pca9685 &driver);
   void begin() override;
   void update() override;
   void reset() override;

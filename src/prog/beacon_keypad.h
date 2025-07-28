@@ -3,18 +3,18 @@
  * @brief defines the keypad program
  * @author Aldem Pido
  */
-#ifndef PROGKEYPAD_H
-#define PROGKEYPAD_H
+#ifndef BEACON_KEYPAD_H
+#define BEACON_KEYPAD_H
 #include "../config/settings.h"
 #include "../driver/pca9685.h"
 #include "../helper/rgbled.h"
-#include "baseprogram.h"
+#include "program_template.h"
 #include <Keypad.h>
 
 namespace Program {
-class ProgKeypad : public BaseProgram {
+class Beacon_Keypadpad : public Program_Template {
 public:
-  ProgKeypad(Driver::Pca9685 &driver);
+  Beacon_Keypadpad(Driver::Pca9685 &driver);
   void begin() override;
   void update() override;
   void reset() override;

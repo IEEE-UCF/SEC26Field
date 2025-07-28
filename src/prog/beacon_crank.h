@@ -3,19 +3,19 @@
  * @brief Header for crank program
  * @author Aldem Pido
  */
-#ifndef PROGCRANK_H
-#define PROGCRANK_H
+#ifndef BEACON_CRANK_H
+#define BEACON_CRANK_H
 #include "../config/settings.h"
 #include "../driver/pca9685.h"
 #include "../helper/rgbled.h"
-#include "baseprogram.h"
+#include "program_template.h"
 #include <Arduino.h>
 
 
 namespace Program {
-class ProgCrank : public BaseProgram {
+class Beacon_Crank : public Program_Template {
 public:
-  ProgCrank(Driver::Pca9685 &driver);
+  Beacon_Crank(Driver::Pca9685 &driver);
   void begin() override;
   void update() override;
   void reset() override;

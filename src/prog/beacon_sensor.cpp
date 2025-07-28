@@ -1,26 +1,26 @@
-#include "progsensor.h"
+#include "beacon_sensor.h"
 namespace Program {
-ProgSensor::ProgSensor(Driver::Pca9685 &driver)
-    : BaseProgram(driver, Configuration::Sensor::LIGHT, "Pressure"),
+Beacon_Sensor::Beacon_Sensor(Driver::Pca9685 &driver)
+    : Program_Template(driver, Configuration::Sensor::LIGHT, "Pressure"),
       _ind(driver, Configuration::Sensor::IND) {}
 
-void ProgSensor::begin() {}
+void Beacon_Sensor::begin() {}
 
-void ProgSensor::update() {
-  bool result = ProgSensor::evaluateObject();
+void Beacon_Sensor::update() {
+  bool result = Beacon_Sensor::evaluateObject();
   switch (_state) {
   case RUNNING_OFF:
     if (!result) {
       _state = RUNNING_ON;
-      BaseProgram::updateBeacon();
-      ProgSensor::updateIndicator();
+      Program_Template::updateBeacon();
+      Beacon_Sensor::updateIndicator();
     }
     break;
   case CUSTOM1: // special case if sens is not high enough at the beginning,
     if (result) {
       _state = RUNNING_OFF;
-      BaseProgram::updateBeacon();
-      ProgSensor::updateIndicator();
+      Program_Template::updateBeacon();
+      Beacon_Sensor::updateIndicator();
     }
     break;
   case RESET:
@@ -31,22 +31,22 @@ void ProgSensor::update() {
   }
 }
 
-void ProgSensor::reset() {
-  BaseProgram::reset();    // handles beacon led, state, etc...
-  ProgSensor::updateIndicator(); // updates indicator
+void Beacon_Sensor::reset() {
+  Program_Template::reset();    // handles beacon led, state, etc...
+  Beacon_Sensor::updateIndicator(); // updates indicator
   _reading = 0;
 }
 
-void ProgSensor::getReading() {
+void Beacon_Sensor::getReading() {
   _reading = analogRead(Configuration::Sensor::IND);
 }
 
 /**
  * Returns true if an object exists
  */
-bool ProgSensor::evaluateObject() { return _reading >= 50; }
+bool Beacon_Sensor::evaluateObject() { return _reading >= 50; }
 
-void ProgSensor::updateIndicator() {
+void Beacon_Sensor::updateIndicator() {
   switch (_state) {
   case RESET:
   case RUNNING_OFF:

@@ -1,16 +1,16 @@
 /**
- * @file baseprogram.h
+ * @file program_template.h
  * @brief defines shared functions for each program
  * @author Aldem Pido
  */
-#ifndef BASEPROGRAM_H
-#define BASEPROGRAM_H
+#ifndef PROGRAM_TEMPLATE_H
+#define PROGRAM_TEMPLATE_H
 
 #include "../helper/rgbled.h"
 #include <Arduino.h>
 
 namespace Program {
-class BaseProgram {
+class Program_Template {
 public:
   enum States {
     RESET,
@@ -20,7 +20,7 @@ public:
     CUSTOM1,
     CUSTOM2
   };
-  BaseProgram(Driver::Pca9685 &driver, Configuration::LedSetup ledsetup,
+  Program_Template(Driver::Pca9685 &driver, Configuration::LedSetup ledsetup,
               String identifier);
   virtual void begin();
   virtual void update();
