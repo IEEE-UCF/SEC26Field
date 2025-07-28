@@ -20,27 +20,36 @@ void ProgKeypad::begin() {
 }
 
 void ProgKeypad::update() {
-  char key = _keypad.getKey();
-  if (key) {
-    if (key == '*') {
-      _input_pass.remove(0); // clears string
-    } else if (key == '#') {
-      if (Configuration::Keypad::password.equals(_input_pass)) {
-        _state = 2;
+  switch (_state) {
+  case 0:
+  case 2:
+  case 3:
+  default:
+    break;
+  case 1:
+    char key = _keypad.getKey();
+    if (key) {
+      if (key == '*') {
+        _input_pass.remove(0); // clears string
+      } else if (key == '#') {
+        if (Configuration::Keypad::password.equals(_input_pass)) {
+          _state = 2;
+        } else {
+          _state = 1;
+        }
       } else {
-        _state = 1;
+        _input_pass.concat(key);
       }
-    } else {
-      _input_pass.concat(key);
+      ProgKeypad::updateInd();
+      BaseProgram::updateBeaconLed();
     }
-    BaseProgram::updateBeaconLed();
   }
 }
 
 void ProgKeypad::reset() {
   BaseProgram::reset();  // handles beacon led, state, etc...
-  _input_pass.remove(0); // clears string
   updateInd();           // set indicator led to 0
+  _input_pass.remove(0); // clears string
 }
 
 void ProgKeypad::updateInd() {

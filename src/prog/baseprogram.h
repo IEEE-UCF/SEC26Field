@@ -12,6 +12,14 @@
 namespace Program {
 class BaseProgram {
 public:
+  enum States {
+    RESET,
+    RUNNING_OFF,
+    RUNNING_ON,
+    PAUSE,
+    CUSTOM1,
+    CUSTOM2
+  };
   BaseProgram(Driver::Pca9685 &driver, Configuration::LedSetup ledsetup,
               String identifier);
   virtual void begin();

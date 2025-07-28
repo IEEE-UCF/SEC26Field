@@ -60,6 +60,7 @@ const String password = "73738";
 }; // namespace Keypad
 
 namespace Sensor {
+constexpr LedSetup LIGHT(0, 0, 0);
 constexpr int FSR_IN = 0;
 constexpr int IND = 0;
 }; // namespace Sensor

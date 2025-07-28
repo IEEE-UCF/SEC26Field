@@ -22,6 +22,9 @@ void ProgButton::update() {
   _in.loop(); // update the button
   switch (_state) {
   case 0: // reset
+  case 2: // running, beacon activated
+  case 3: // paused
+  default:
     break;
   case 1: // running, beacon not activated
     if (_in.isPressed()) {
@@ -34,17 +37,12 @@ void ProgButton::update() {
       }
     }
     break;
-  case 2: // running, beacon activated
-    // nothing happens here
-    break;
-  case 3: // paused
-    // nothing happens here
-    break;
   }
 }
 
 void ProgButton::reset() {
   BaseProgram::reset(); // handles beacon led, state, etc...
+  ProgButton::updateInd();
   _counter = 0;
   _red.set(0);
   _yellow.set(0);
