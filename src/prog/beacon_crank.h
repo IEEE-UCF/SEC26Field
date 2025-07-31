@@ -11,7 +11,6 @@
 #include "program_template.h"
 #include <Arduino.h>
 
-
 namespace Program {
 class Beacon_Crank : public Program_Template {
 public:
@@ -21,6 +20,12 @@ public:
   void reset() override;
 
 private:
-};
+  void updateIndicator();
+  Helper::Led _ind;
+  static volatile int _counter;
+  static volatile int _direction;
+  static volatile int _prev_CLK_state;
+  static void readEncoder();
+}
 }; // namespace Program
 #endif

@@ -41,7 +41,8 @@ namespace Crank {
 constexpr LedSetup LIGHT(0, 0, 0);
 constexpr int CLK_PIN = 0;
 constexpr int DT_PIN = 0;
-constexpr int IND = 0;
+#define DIRECTION_CW 0
+#define DIRECTION_CCW 1
 }; // namespace Crank
 
 namespace Keypad {
