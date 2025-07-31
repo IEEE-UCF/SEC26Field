@@ -7,7 +7,7 @@
 
 namespace Driver {
 
-Pca9685::Pca9685(uint8_t addr) : _pwm(addr) {}
+Pca9685::Pca9685(uint8_t addr) : _pwm(addr), _addr(addr) {}
 
 void Pca9685::begin() {
   Wire.begin();

@@ -20,9 +20,11 @@ public:
   void begin();
   void setPwm(uint8_t channel, uint8_t value);
   void setPWMFreq(float freq);
+  uint8_t returnAddr() { return _addr; };
 
 private:
   Adafruit_PWMServoDriver _pwm;
+  uint8_t _addr;
 };
 }; // namespace Driver
 #endif
