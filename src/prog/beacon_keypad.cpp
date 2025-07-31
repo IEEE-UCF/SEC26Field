@@ -5,21 +5,22 @@
  */
 #include "beacon_keypad.h"
 namespace Program {
-Beacon_Keypadpad::Beacon_Keypadpad(Driver::Pca9685 &driver)
+Beacon_Keypad::Beacon_Keypad(Driver::Pca9685 &driver)
     : Program_Template(driver, Configuration::Keypad::LIGHT, "Keypad"),
       _ind(driver, Configuration::Keypad::IND),
       _keypad(makeKeymap(Configuration::Keypad::keys),
               Configuration::Keypad::pin_rows,
               Configuration::Keypad::pin_column, Configuration::Keypad::ROW_NUM,
-              Configuration::Keypad::COLUMN_NUM) {}
+              Configuration::Keypad::COLUMN_NUM) {
+                  _input_pass.reserve(32); // maximum input characters is 33, change if needed
+              }
 
-void Beacon_Keypadpad::begin() {
-  _input_pass.reserve(32); // maximum input characters is 33, change if needed
-  Beacon_Keypadpad::reset();
+void Beacon_Keypad::begin() {
+  Beacon_Keypad::reset();
   _state = 1;
 }
 
-void Beacon_Keypadpad::update() {
+void Beacon_Keypad::update() {
   switch (_state) {
   case 0:
   case 2:
@@ -40,19 +41,19 @@ void Beacon_Keypadpad::update() {
       } else {
         _input_pass.concat(key);
       }
-      Beacon_Keypadpad::updateIndicator();
+      Beacon_Keypad::updateIndicator();
       Program_Template::updateBeacon();
     }
   }
 }
 
-void Beacon_Keypadpad::reset() {
+void Beacon_Keypad::reset() {
   Program_Template::reset();    // handles beacon led, state, etc...
-  Beacon_Keypadpad::updateIndicator(); // set indicator led to 0
+  Beacon_Keypad::updateIndicator(); // set indicator led to 0
   _input_pass.remove(0);   // clears string
 }
 
-void Beacon_Keypadpad::updateIndicator() {
+void Beacon_Keypad::updateIndicator() {
   switch (_state) {
   case RESET:
   case RUNNING_OFF:

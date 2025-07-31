@@ -12,9 +12,9 @@
 #include <Keypad.h>
 
 namespace Program {
-class Beacon_Keypadpad : public Program_Template {
+class Beacon_Keypad : public Program_Template {
 public:
-  Beacon_Keypadpad(Driver::Pca9685 &driver);
+  Beacon_Keypad(Driver::Pca9685 &driver);
   void begin() override;
   void update() override;
   void reset() override;
