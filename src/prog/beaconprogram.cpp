@@ -15,7 +15,7 @@ using  Helper::Colors::ColorType;
  * @return Random ColorProperties
  */
 const Helper::ColorProperties &BeaconProgram::getRandomColor() {
-  int index = random(4);
+  int index = random(1,static_cast<int>(Helper::Colors::ColorType::COUNT));
   return colorData[index];
 }
 
