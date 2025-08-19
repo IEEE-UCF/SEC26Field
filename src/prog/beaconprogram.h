@@ -17,8 +17,8 @@ public:
                 Configuration::RgbSetup beacon,
                 String identifier = "beacon_program");
 
-  void begin() override;
-  void update() override;
+  //void begin() override;
+  //void update() override;
   // void pause() override;
   void reset() override;
 
