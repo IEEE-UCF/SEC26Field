@@ -21,16 +21,16 @@
  */
 
 namespace Configuration {
-struct LedSetup {
+struct RgbSetup {
   const int r;
   const int g;
   const int b;
-  constexpr LedSetup(const int r, const int g, const int b)
+  constexpr RgbSetup(const int r, const int g, const int b)
       : r(r), g(g), b(b) {};
 };
 
 namespace Button {
-constexpr LedSetup LIGHT(0, 0, 0);
+constexpr RgbSetup LIGHT(0, 0, 0);
 constexpr int BUT_IN = 0;
 constexpr int IND_RED = 0;
 constexpr int IND_YELLOW = 0;
@@ -38,14 +38,14 @@ constexpr int IND_GREEN = 0;
 }; // namespace Button
 
 namespace Crank {
-constexpr LedSetup LIGHT(0, 0, 0);
+constexpr RgbSetup LIGHT(0, 0, 0);
 constexpr int CLK_PIN = 0;
 constexpr int DT_PIN = 0;
 constexpr int IND = 0;
 }; // namespace Crank
 
 namespace Keypad {
-constexpr LedSetup LIGHT(0, 0, 0);
+constexpr RgbSetup LIGHT(0, 0, 0);
 constexpr int IND = 0;
 constexpr int ROW_NUM = 4;    // four rows
 constexpr int COLUMN_NUM = 3; // three columns

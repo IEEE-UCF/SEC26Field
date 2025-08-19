@@ -13,7 +13,7 @@ namespace Helper {
 class Led {
 public:
   Led(Driver::Pca9685 &driver, uint8_t c);
-  void set(uint8_t str);
+  bool set(uint8_t str);
 
 private:
   Driver::Pca9685 &_driver;
