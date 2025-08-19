@@ -23,6 +23,7 @@ struct KeypadConfig {
 class KeypadProgram : public BeaconProgram {
 public:
   KeypadProgram(Driver::Pca9685 &driver, KeypadConfig &config);
+  void begin() override;
   void update() override;
   void reset() override;
 private:

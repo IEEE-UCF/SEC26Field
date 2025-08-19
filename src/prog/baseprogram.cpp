@@ -9,7 +9,7 @@ namespace Program {
  * Constructor.
  */
 BaseProgram::BaseProgram(String identifier)
-    : _identifier(identifier), _state(0) {}
+    : _identifier(identifier), _state(0), _prevState(0) {}
 
 /**
  * Begins the program. Calls the reset function, then sets the state to "1"
@@ -44,5 +44,18 @@ void BaseProgram::displayInfo(Print &output) const {
   output.print(_identifier);
   output.print("State: ");
   output.print(_state);
+}
+
+/**
+ * See if state has changed.
+ * @return bool
+ */
+bool BaseProgram::stateChanged() {
+  if(_state != _prevState) {
+    _prevState = _state;
+    return true;
+  } else {
+    return false;
+  }
 }
 } // namespace Program

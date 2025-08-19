@@ -5,19 +5,24 @@
  */
 #include "button.h"
 namespace Program {
-Button::Button(Driver::Pca9685 &driver, BeaconConfig &config)
+ButtonProgram::ButtonProgram(Driver::Pca9685 &driver, BeaconConfig &config)
     : BeaconProgram(driver, config.activation_c, config.beacon, config.identifier), _config(config),
       _redButton(config.kBut), _r(driver, config.cR), _y(driver, config.cY),
-      _g(driver, config.cG) {}
+      _g(driver, config.cG), _count(0) {}
 
-void Button::update() {
+void ButtonProgram::begin() {
+  reset();
+  _state = 1;
+}
+
+void ButtonProgram::update() {
   BeaconProgram::update();
   _redButton.loop(); // update the button
-  unsigned long count = _redButton.getCount(); // get count
+  int newCount =  _redButton.getCount();
   switch (_state) {
   case 1:
   case 2:
-    if (count >= 3) {
+    if (newCount >= 3) {
       _state = 2;
     } else {
       _state = 1;
@@ -28,19 +33,22 @@ void Button::update() {
   default:
     break;
   }
-  if (_redButton.isPressed()) {
+  if (_count != newCount || BaseProgram::stateChanged()) { // updates led on count or state switch
+    _count = newCount;
     BeaconProgram::updateLed();
-    Button::updateTrafficLight(count);
+    ButtonProgram::updateTrafficLight();
   }
+
 }
 
 /**
  * Updates the button's traffic light.
  * @param count button count.
  */
-void Button::updateTrafficLight(int count) {
-  switch (count) {
+void ButtonProgram::updateTrafficLight() {
+  switch (_count) {
   case 0:
+  default:
     _r.set(0);
     _y.set(0);
     _g.set(0);
@@ -56,7 +64,6 @@ void Button::updateTrafficLight(int count) {
     _g.set(0);
     break;
   case 3:
-  default:
     _r.set(0);
     _y.set(0);
     _g.set(255);
@@ -64,10 +71,11 @@ void Button::updateTrafficLight(int count) {
   }
 }
 
-void Button::reset() {
+void ButtonProgram::reset() {
   BeaconProgram::reset();
   _redButton.setCountMode(COUNT_RISING);
   _redButton.resetCount();
-  updateTrafficLight(_redButton.getCount()); // should pass 0 always
+  _count = 0;
+  updateTrafficLight(); // should pass 0 always
 }
 } // namespace Program

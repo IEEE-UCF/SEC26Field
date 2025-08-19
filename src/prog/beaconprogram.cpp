@@ -44,4 +44,13 @@ void BeaconProgram::reset() {
   _randomColor = &getRandomColor();
   updateLed();
 }
+
+/**
+ * Function runs every time state change is detected.
+ */
+void BeaconProgram::stateSwitch() {
+  if(BaseProgram::stateChanged()) {
+      updateLed();
+  }
+}
 }

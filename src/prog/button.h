@@ -13,14 +13,13 @@ struct BeaconConfig {
   Configuration::RgbSetup beacon;
   String identifier;
 };
-class Button : public BeaconProgram {
+class ButtonProgram : public BeaconProgram {
 public:
-  Button(Driver::Pca9685 &driver, BeaconConfig &config);
+  ButtonProgram(Driver::Pca9685 &driver, BeaconConfig &config);
 
-  void Button::begin() override;
-  void Button::update() override;
-  void Button::pause() override;
-  void Button::reset() override;
+  void ButtonProgram::begin() override;
+  void ButtonProgram::update() override;
+  void ButtonProgram::reset() override;
 
 private:
   BeaconConfig &_config;
@@ -31,7 +30,7 @@ private:
   Helper::Led _y;
   Helper::Led _g;
 
-  void Button::updateTrafficLight(int count);
+  void ButtonProgram::updateTrafficLight();
 };
 }; // namespace Program
 

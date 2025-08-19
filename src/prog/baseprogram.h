@@ -28,6 +28,8 @@ protected:
    * 3: paused
    * */
   int _state;
+  int _prevState;
+  bool stateChanged();
 };
 }; // namespace Program
 
