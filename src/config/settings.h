@@ -47,15 +47,11 @@ constexpr int IND = 0;
 namespace Keypad {
 constexpr RgbSetup LIGHT(0, 0, 0);
 constexpr int IND = 0;
-constexpr int ROW_NUM = 4;    // four rows
-constexpr int COLUMN_NUM = 3; // three columns
 byte pin_rows[ROW_NUM] = {0, 0, 0,
                           0}; // connect to the row pinouts of the keypad
 byte pin_column[COLUMN_NUM] = {
     0, 0, 0}; // connect to the column pinouts of the keypad
-constexpr char keys[ROW_NUM][COLUMN_NUM] = {
-    {'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}, {'*', '0', '#'}};
-const String password = "73738";
+
 
 }; // namespace Keypad
 

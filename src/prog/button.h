@@ -15,7 +15,7 @@ struct BeaconConfig {
 };
 class Button : public BeaconProgram {
 public:
-  Button(Driver::Pca9685 &driver, BeaconConfig config);
+  Button(Driver::Pca9685 &driver, BeaconConfig &config);
 
   void Button::begin() override;
   void Button::update() override;
@@ -23,7 +23,7 @@ public:
   void Button::reset() override;
 
 private:
-  BeaconConfig _config;
+  BeaconConfig &_config;
 
   int _count;
   ezButton _redButton;

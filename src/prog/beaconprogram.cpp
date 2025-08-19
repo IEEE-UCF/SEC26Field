@@ -20,7 +20,7 @@ const Helper::ColorProperties &BeaconProgram::getRandomColor() {
 }
 
 /**
- * Updates all leds
+ * Updates generic beacon leds
  */
 void BeaconProgram::updateLed() {
   switch(_state) {

@@ -5,7 +5,7 @@
  */
 #include "button.h"
 namespace Program {
-Button::Button(Driver::Pca9685 &driver, BeaconConfig config)
+Button::Button(Driver::Pca9685 &driver, BeaconConfig &config)
     : BeaconProgram(driver, config.activation_c, config.beacon, config.identifier), _config(config),
       _redButton(config.kBut), _r(driver, config.cR), _y(driver, config.cY),
       _g(driver, config.cG) {}
