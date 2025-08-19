@@ -1,8 +1,7 @@
 /**
  * @file pca9685.h
  * @brief Defines PCA9685 routines
- * The PCA9685 can control up to 16 PWM output channels at a time. They are
- * being used for LEDs.
+ * The PCA9685 is a 16-Channel 12-bit resolution driver. It is being used to drive LEDs.
  * @author Aldem Pido
  */
 #ifndef PCA9685_h
@@ -16,10 +15,9 @@ namespace Driver {
 class Pca9685 {
 public:
   Pca9685(uint8_t addr = 0x40);
-
-  void begin();
-  void setPwm(uint8_t channel, uint8_t value);
-  void setPWMFreq(float freq);
+  bool begin();
+  bool setPwm(uint8_t channel, uint8_t value);
+  void setPWMFreq(float freq = 1000);
 
 private:
   Adafruit_PWMServoDriver _pwm;
