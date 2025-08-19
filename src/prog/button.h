@@ -9,12 +9,13 @@
 #include <ezButton.h>
 namespace Program {
 struct BeaconConfig {
-  uint8_t kBut, cR, cY, cG;
+  uint8_t kBut, cR, cY, cG, activation_c;
+  Configuration::RgbSetup beacon;
+  String identifier;
 };
 class Button : public BeaconProgram {
 public:
-  Button(Driver::Pca9685 &driver, BeaconConfig config, uint8_t activation_c,
-         Configuration::RgbSetup beacon, String identifier = "button");
+  Button(Driver::Pca9685 &driver, BeaconConfig config);
 
   void Button::begin() override;
   void Button::update() override;
