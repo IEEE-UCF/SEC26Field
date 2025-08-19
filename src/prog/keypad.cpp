@@ -30,6 +30,8 @@ void KeypadProgram::update() {
         } else { // wrong
           _input_password.clear();
         }
+      } else {
+        _input_password.concat(key);
       }
     }
     break;
