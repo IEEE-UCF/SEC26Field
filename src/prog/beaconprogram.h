@@ -21,14 +21,13 @@ public:
   //void update() override;
   // void pause() override;
   void reset() override;
-  virtual void stateSwitch();
+  void stateSwitch() override;
 
 protected:
   Helper::Led _led_activation;
   Helper::RGBLed _led_beacon;
   const Helper::ColorProperties *_randomColor;
   const Helper::ColorProperties &getRandomColor();
-  int _prevState;
   void updateLed();
 };
 }; // namespace Program

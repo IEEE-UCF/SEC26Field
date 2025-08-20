@@ -17,6 +17,7 @@ public:
   virtual void update();
   virtual void pause();
   virtual void reset();
+  virtual void stateSwitch();
   virtual void displayInfo(Print &output) const;
 
 protected:
