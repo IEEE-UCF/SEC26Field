@@ -1,10 +1,20 @@
-// Code for Antenna #1 for the Southeast Con 2026 Hardware Competition
-// The code requires the library ezButton 1.0.4 to be installed
-
 #include <Arduino.h>
-#include <ezButton.h>  // The library to use for SW pin
+#include <ezButton.h>  // The library to use for SW pin, duh
 
 #define SW_PIN 4
+
+// these inline comments will be pretty different from my usual style
+// since i want new people to understand this code 
+
+// --- ESP32 LEDC PWM Setup ---
+// On ESP32, analogWrite is different, we use the LEDC peripheral for PWM.
+// Now we set up channels for each color of the RGB LED.
+const int redChannel = 0;
+const int greenChannel = 1;
+const int blueChannel = 2;
+const int freq = 5000;
+const int resolution = 8;
+// --- End ESP32 Setup ---
 
 int randomColor;
 int counter = 0;
@@ -26,25 +36,32 @@ ezButton button(SW_PIN);
 void setup() {
   Serial.begin(9600);
 
-  randomSeed(analogRead(A0));
+  // Use a valid ADC pin for ESP32, like GPIO 36 (its often marked A0 on dev boards!)
+  randomSeed(analogRead(36)); 
   randomColor = random(1, 5);
 
-  pinMode(red, OUTPUT);
-  pinMode(green, OUTPUT);
-  pinMode(blue, OUTPUT);
+  // --- ESP32 LEDC PWM Initialization ---
+  ledcSetup(redChannel, freq, resolution);
+  ledcSetup(greenChannel, freq, resolution);
+  ledcSetup(blueChannel, freq, resolution);
+  ledcAttachPin(red, redChannel);
+  ledcAttachPin(green, greenChannel);
+  ledcAttachPin(blue, blueChannel);
+  // --- End ESP32 Initialization ---
+
   pinMode(redLED, OUTPUT);
   pinMode(yellowLED, OUTPUT);
   pinMode(greenLED, OUTPUT);
   pinMode(led_pin, OUTPUT);
+
+  // No need to set pinMode for red, green, blue as ledcAttachPin does it already.
 }
 
 void loop() {
-  button.loop(); 
-
+  button.loop();
   if (button.isPressed()) {
     Serial.println("The button is pressed");
     counter++;
-
     if (counter == 1) { // First button press
       digitalWrite(redLED, HIGH);
     } 
@@ -71,13 +88,16 @@ void loop() {
         greenBrightness = 0;
       }
 
-      analogWrite(red, redBrightness);
-      analogWrite(green, greenBrightness);
-      analogWrite(blue, blueBrightness);
+      // --- ESP32 LEDC PWM Write ---
+      ledcWrite(redChannel, redBrightness);
+      ledcWrite(greenChannel, greenBrightness);
+      ledcWrite(blueChannel, blueBrightness);
+      // --- End ESP32 Write ---
+
       digitalWrite(led_pin, HIGH);
-      delay(3000);
+      delay(3000); // Original bad behavior preserved
     }
-    delay(500);
+    delay(500); // Original bad behavior preserved
 
   }
 }
