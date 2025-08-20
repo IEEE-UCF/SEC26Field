@@ -17,6 +17,8 @@ public:
   virtual void update();
   virtual void pause();
   virtual void reset();
+  virtual void resume();
+  virtual void stateSwitch();
   virtual void displayInfo(Print &output) const;
 
 protected:
@@ -28,6 +30,8 @@ protected:
    * 3: paused
    * */
   int _state;
+  int _prevState;
+  bool stateChanged();
 };
 }; // namespace Program
 

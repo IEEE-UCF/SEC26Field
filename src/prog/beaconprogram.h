@@ -21,6 +21,7 @@ public:
   //void update() override;
   // void pause() override;
   void reset() override;
+  void stateSwitch() override;
 
 protected:
   Helper::Led _led_activation;

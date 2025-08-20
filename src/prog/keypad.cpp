@@ -15,6 +15,11 @@ KeypadProgram::KeypadProgram(Driver::Pca9685 &driver, KeypadConfig &config)
   reset();
 }
 
+void KeypadProgram::begin() {
+  reset();
+  _state = 1;
+}
+
 void KeypadProgram::update() {
   BeaconProgram::update();
   switch (_state) {
@@ -41,6 +46,7 @@ void KeypadProgram::update() {
   default:
     break;
   }
+  BeaconProgram::stateSwitch(); // updates led when state switch
 }
 
 void KeypadProgram::reset() {

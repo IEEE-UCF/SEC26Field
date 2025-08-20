@@ -15,7 +15,7 @@ using  Helper::Colors::ColorType;
  * @return Random ColorProperties
  */
 const Helper::ColorProperties &BeaconProgram::getRandomColor() {
-  int index = random(4);
+  int index = random(1,static_cast<int>(Helper::Colors::ColorType::COUNT));
   return colorData[index];
 }
 
@@ -43,5 +43,14 @@ void BeaconProgram::reset() {
   BaseProgram::reset();
   _randomColor = &getRandomColor();
   updateLed();
+}
+
+/**
+ * Function runs every time state change is detected.
+ */
+void BeaconProgram::stateSwitch() {
+  if(BaseProgram::stateChanged()) {
+      updateLed();
+  }
 }
 }
