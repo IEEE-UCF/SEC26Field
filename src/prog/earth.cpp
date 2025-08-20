@@ -9,8 +9,8 @@ EarthProgram::EarthProgram(EarthConfig &config, LcdManager &manager)
     : BaseProgram(config.identifier), _config(config), _manager(manager),
       _ir(config.ir_k), _lastAntenna(AntennaCode::NONE),
       _lastColor(Helper::Colors::ColorType::OFF), _new(false) {
-        reset();
-      }
+  reset();
+}
 void EarthProgram::begin() {
   BaseProgram::begin();
   reset();
@@ -19,16 +19,30 @@ void EarthProgram::begin() {
 
 void EarthProgram::reset() {
   BaseProgram::reset();
-  //TODO: add logic for initializing the manager
+  for (int i = 0; i < RESULT_ROWS; i++) {
+    std::string strAntenna =
+        antennaLineNames[static_cast<int>(_lastAntenna)].substr(0, 4);
+    std::string strStatus = "OFF";
+    std::string strColor =
+        std::string(Helper::Colors::colorData[static_cast<int>(Helper::Colors::ColorType::OFF)]
+                        .name.c_str())
+            .substr(0, 3);
+    std::string out(16, ' '); // initialize 16 long with space
+    out.replace(0, strAntenna.length(), strAntenna);
+    out.replace(7, strStatus.length(), strStatus);
+    out.replace(13, strColor.length(), strColor);
+    std::string key = "an_" + strAntenna;
+    _manager.addLine(key, out);
+  }
 }
 
 void EarthProgram::update() {
-  switch(_state) {
-    case 0:
-    case 3:
+  switch (_state) {
+  case 0:
+  case 3:
     break;
-    case 1:
-    case 2:
+  case 1:
+  case 2:
     updateIR();
     updateLCD();
     break;
