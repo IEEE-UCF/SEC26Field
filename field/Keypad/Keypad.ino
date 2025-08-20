@@ -1,5 +1,3 @@
-// Code used for Antenna 4 of the SoutheastCon Hardware Competition 2026
-
 #include <Keypad.h>
 
 int red = 9;
@@ -7,13 +5,21 @@ int green = 10;
 int blue = 11;
 int led_pin = 13;
 
+// --- ESP32 LEDC PWM Setup ---
+const int redChannel_keypad = 6;
+const int greenChannel_keypad = 7;
+const int blueChannel_keypad = 8;
+const int freq_keypad = 5000;
+const int resolution_keypad = 8;
+// --- End ESP32 Setup ---
+
 int redBrightness = 0;
 int greenBrightness = 0;
 int blueBrightness = 0;
 int randomColor;
 
-const int ROW_NUM = 4; //four rows
-const int COLUMN_NUM = 3; //three columns
+const int ROW_NUM = 4;
+const int COLUMN_NUM = 3;
 
 char keys[ROW_NUM][COLUMN_NUM] = {
   {'1','2','3'},
@@ -22,26 +28,32 @@ char keys[ROW_NUM][COLUMN_NUM] = {
   {'*','0','#'}
 };
 
-byte pin_rows[ROW_NUM] = {5, 6, 7, 8}; //connect to the row pinouts of the keypad
-byte pin_column[COLUMN_NUM] = {2, 3, 4}; //connect to the column pinouts of the keypad
+// Changed to common ESP32 GPIO pins, you can adjust these as needed
+byte pin_rows[ROW_NUM] = {19, 18, 5, 17};
+byte pin_column[COLUMN_NUM] = {16, 4, 2}; 
 
 Keypad keypad = Keypad(makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_NUM );
-
-const String password = "73738"; // change your password here
+const String password = "73738";
 String input_password;
 
 void setup(){
   Serial.begin(9600);
-  input_password.reserve(32); // maximum input characters is 33, change if needed
-  randomSeed(analogRead(A0));
+  input_password.reserve(32);
+  // Using GPIO 36 as a placeholder again!
+  randomSeed(analogRead(36)); 
   randomColor = random(5);
   Serial.println(randomColor);
 
-  pinMode(red, OUTPUT);
-  pinMode(green, OUTPUT);
-  pinMode(blue, OUTPUT);
+  // --- ESP32 LEDC PWM Initialization ---
+  ledcSetup(redChannel_keypad, freq_keypad, resolution_keypad);
+  ledcSetup(greenChannel_keypad, freq_keypad, resolution_keypad);
+  ledcSetup(blueChannel_keypad, freq_keypad, resolution_keypad);
+  ledcAttachPin(red, redChannel_keypad);
+  ledcAttachPin(green, greenChannel_keypad);
+  ledcAttachPin(blue, blueChannel_keypad);
+  // --- End ESP32 Initialization ---
+  
   pinMode(led_pin, OUTPUT);
-
 }
 
 void loop(){
@@ -49,14 +61,12 @@ void loop(){
 
   if (key){
     Serial.println(key);
-
     if(key == '*') {
-      input_password = ""; // clear input password
+      input_password = "";
     } 
     else if(key == '#') {
       if(password == input_password) {
         Serial.println("password is correct");
-        
         Serial.print("LED On");
         digitalWrite(led_pin, HIGH);
 
@@ -85,20 +95,23 @@ void loop(){
           greenBrightness = 0; 
         }
 
-        analogWrite(red, redBrightness);
-        analogWrite(green, greenBrightness);
-        analogWrite(blue, blueBrightness);
+        // --- ESP32 LEDC PWM Write ---
+        ledcWrite(redChannel_keypad, redBrightness);
+        ledcWrite(greenChannel_keypad, greenBrightness);
+        ledcWrite(blueChannel_keypad, blueBrightness);
+        // --- End ESP32 Write ---
+
         digitalWrite(led_pin, HIGH);
-        delay(3000);
-        input_password = ""; // clear input password
+        delay(3000); // Preserving that original bad behavior
+        input_password = "";
         } 
         else {
           Serial.println("password is incorrect, try again");
-          input_password = ""; // clear input password
+          input_password = "";
         }
     } 
     else {
-      input_password += key; // append new character to input password string
+      input_password += key;
     }
   }
 }
