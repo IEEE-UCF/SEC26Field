@@ -36,6 +36,11 @@ void BaseProgram::pause() { _state = 3; }
 void BaseProgram::reset() { _state = 0; }
 
 /**
+ * Resumes the program. Sets the state to "1" (running).
+ */
+void BaseProgram::resume() { if(_state == 3) {_state = 1;}}
+
+/**
  * Displays info of state.
  * @param output Serial pointer
  */
